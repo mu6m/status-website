@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DIRECT_URL")
+}
+
+model website {
+  id        String   @id @unique @default(cuid())
+  url       String   @unique
+  hits      hit[]
+  createdAt DateTime @default(now())
+}
+
+model hit {
+  id        String   @id @unique @default(cuid())
+  status    Int
+  time      DateTime @default(now())
+  website   website  @relation(fields: [websiteId], references: [id])
+  websiteId String
+}
